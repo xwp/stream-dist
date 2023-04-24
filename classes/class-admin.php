@@ -191,12 +191,11 @@ class Admin {
 			)
 		);
 
-		/**
-		 * Uninstall Streams and Deactivate plugin.
-		 *
-		 * @todo Confirm if variable assignment is necessary.
-		 */
-		$uninstall = $this->plugin->db->driver->purge_storage( $this->plugin );
+		// Setup Stream uninstall with full data purge.
+		add_action(
+			'wp_ajax_wp_stream_uninstall',
+			array( $this, 'action_wp_stream_uninstall' )
+		);
 
 		// Auto purge setup.
 		add_action( 'wp_loaded', array( $this, 'purge_schedule_setup' ) );
@@ -820,8 +819,8 @@ class Admin {
 		if ( ! defined( 'DISALLOW_FILE_MODS' ) || false === DISALLOW_FILE_MODS ) {
 			$url = add_query_arg(
 				array(
-					'action'          => 'wp_stream_uninstall',
-					'wp_stream_nonce' => wp_create_nonce( 'stream_nonce' ),
+					'action' => 'wp_stream_uninstall',
+					'nonce'  => wp_create_nonce( 'stream_uninstall_nonce' ),
 				),
 				admin_url( 'admin-ajax.php' )
 			);
@@ -1126,5 +1125,29 @@ class Admin {
 		}
 
 		return delete_user_meta( $user_id, $meta_key, $meta_value );
+	}
+
+	/**
+	 * AJAX callback for the uninstall action.
+	 *
+	 * @return void
+	 */
+	public function action_wp_stream_uninstall() {
+		check_ajax_referer( 'stream_uninstall_nonce', 'nonce' );
+
+		// Verify current user's permissions before proceeding.
+		if ( ! current_user_can( $this->settings_cap ) ) {
+			wp_die(
+				esc_html__( "You don't have sufficient privileges to do this action.", 'stream' )
+			);
+		}
+
+		if ( defined( 'DISALLOW_FILE_MODS' ) && true === DISALLOW_FILE_MODS ) {
+			wp_die(
+				esc_html__( "You don't have sufficient file permissions to do this action.", 'stream' )
+			);
+		}
+
+		$this->plugin->db->driver->purge_storage( $this->plugin );
 	}
 }

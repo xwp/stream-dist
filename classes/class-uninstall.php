@@ -58,21 +58,8 @@ class Uninstall {
 			$this->plugin->settings->network_options_key,
 		);
 
-		// Verify current user's permissions before proceeding.
-		if ( ! current_user_can( $this->plugin->admin->settings_cap ) ) {
-			wp_die(
-				esc_html__( "You don't have sufficient privileges to do this action.", 'stream' )
-			);
-		}
-
-		if ( defined( 'DISALLOW_FILE_MODS' ) && true === DISALLOW_FILE_MODS ) {
-			wp_die(
-				esc_html__( "You don't have sufficient file permissions to do this action.", 'stream' )
-			);
-		}
-
 		// Prevent this action from firing.
-		remove_action( 'deactivate_plugin', array( 'Connector_Installer', 'callback' ), null );
+		remove_action( 'deactivate_plugin', array( WP_Stream\Connector_Installer::class, 'callback' ), null );
 
 		// Just in case.
 		if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
@@ -81,9 +68,10 @@ class Uninstall {
 
 		/**
 		 * Drop everything on single site installs or when network activated
-		 * Otherwise only delete data relative to the current blog.
+		 * AND being uninstalled from the main blog. Otherwise only delete
+		 * data relative to the current blog.
 		 */
-		if ( ! is_multisite() || $this->plugin->is_network_activated() ) {
+		if ( ! is_multisite() || ( $this->plugin->is_network_activated() && is_main_site() && is_super_admin() ) ) {
 			$this->delete_all_records();
 			$this->delete_all_options();
 			$this->delete_all_user_meta();
@@ -218,7 +206,7 @@ class Uninstall {
 		// Specific user meta.
 		foreach ( $this->user_meta as $meta_key ) {
 			$wpdb->query(
-				$wpdb->prepare( "DELETE FROM {$wpdb->usermeta} WHERE meta_key = {$wpdb->prefix}%s;", $meta_key )
+				$wpdb->prepare( "DELETE FROM {$wpdb->usermeta} WHERE meta_key = %s;", $wpdb->prefix . $meta_key )
 			);
 		}
 	}
