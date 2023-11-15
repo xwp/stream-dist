@@ -220,6 +220,12 @@ class Admin {
 		$this->network     = new Network( $this->plugin );
 		$this->live_update = new Live_Update( $this->plugin );
 		$this->export      = new Export( $this->plugin );
+
+		// Check if the host has configured the `REMOTE_ADDR` correctly.
+		$client_ip = $this->plugin->get_client_ip_address();
+		if ( empty( $client_ip ) && $this->is_stream_screen() ) {
+			$this->notice( __( 'Stream plugin can\'t determine a reliable client IP address! Please update the hosting environment to set the $_SERVER[\'REMOTE_ADDR\'] variable or use the wp_stream_client_ip_address filter to specify the verified client IP address!', 'stream' ) );
+		}
 	}
 
 	/**
@@ -532,13 +538,19 @@ class Admin {
 	 * @return bool
 	 */
 	public function is_stream_screen() {
-		if ( is_admin() && false !== strpos( wp_stream_filter_input( INPUT_GET, 'page' ), $this->records_page_slug ) ) {
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		$page = wp_stream_filter_input( INPUT_GET, 'page' );
+		if ( is_string( $page ) && false !== strpos( $page, $this->records_page_slug ) ) {
 			return true;
 		}
 
-		$screen = get_current_screen();
-		if ( is_admin() && Alerts::POST_TYPE === $screen->post_type ) {
-			return true;
+		if ( is_admin() && function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+
+			return ( Alerts::POST_TYPE === $screen->post_type );
 		}
 
 		return false;
@@ -1066,10 +1078,6 @@ class Admin {
 	 * @return mixed
 	 */
 	public function get_user_meta( $user_id, $meta_key, $single = true ) {
-		if ( wp_stream_is_vip() && function_exists( 'get_user_attribute' ) ) {
-			return get_user_attribute( $user_id, $meta_key );
-		}
-
 		return get_user_meta( $user_id, $meta_key, $single );
 	}
 
@@ -1084,10 +1092,6 @@ class Admin {
 	 * @return int|bool
 	 */
 	public function update_user_meta( $user_id, $meta_key, $meta_value, $prev_value = '' ) {
-		if ( wp_stream_is_vip() && function_exists( 'update_user_attribute' ) ) {
-			return update_user_attribute( $user_id, $meta_key, $meta_value );
-		}
-
 		return update_user_meta( $user_id, $meta_key, $meta_value, $prev_value );
 	}
 
@@ -1101,10 +1105,6 @@ class Admin {
 	 * @return bool
 	 */
 	public function delete_user_meta( $user_id, $meta_key, $meta_value = '' ) {
-		if ( wp_stream_is_vip() && function_exists( 'delete_user_attribute' ) ) {
-			return delete_user_attribute( $user_id, $meta_key, $meta_value );
-		}
-
 		return delete_user_meta( $user_id, $meta_key, $meta_value );
 	}
 }
