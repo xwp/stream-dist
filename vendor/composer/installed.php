@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'xwp/stream',
-        'pretty_version' => 'dev-feature/reintroduce-packagist-deploy',
-        'version' => 'dev-feature/reintroduce-packagist-deploy',
-        'reference' => 'fb87efd7cc881f568e1b8d6ce8ef0c9151a7a647',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'ec217b8bc04526ba9525baac34ccbd1ca49912b0',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -32,9 +32,9 @@
             ),
         ),
         'xwp/stream' => array(
-            'pretty_version' => 'dev-feature/reintroduce-packagist-deploy',
-            'version' => 'dev-feature/reintroduce-packagist-deploy',
-            'reference' => 'fb87efd7cc881f568e1b8d6ce8ef0c9151a7a647',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'ec217b8bc04526ba9525baac34ccbd1ca49912b0',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

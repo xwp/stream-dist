@@ -1,6 +1,6 @@
 # Stream for WordPress
 
-[![Lint and Test](https://github.com/xwp/stream/actions/workflows/ci.yml/badge.svg)](https://github.com/xwp/stream/actions/workflows/lint-and-test.yml)
+[![Lint and Test](https://github.com/xwp/stream/actions/workflows/ci.yml/badge.svg)](https://github.com/xwp/stream/actions/workflows/ci.yml)
 [![Coverage Status](https://coveralls.io/repos/github/xwp/stream/badge.svg?branch=develop)](https://coveralls.io/github/xwp/stream?branch=develop)
 
 **Track WordPress user and system actions for debugging, logging and compliance purposes.**
