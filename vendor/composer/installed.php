@@ -3,7 +3,7 @@
         'name' => 'xwp/stream',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b4acdc4666d90b0040db636ed62c89271fe46751',
+        'reference' => 'ec9bb1a79ee173e9edc9c9f9b8b7b360db4f6767',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -43,7 +43,7 @@
         'xwp/stream' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b4acdc4666d90b0040db636ed62c89271fe46751',
+            'reference' => 'ec9bb1a79ee173e9edc9c9f9b8b7b360db4f6767',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
