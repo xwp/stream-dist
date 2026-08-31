@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'xwp/stream',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '181efb51ef88cefefce545c3cd56c948f2787107',
+        'pretty_version' => 'v4.4.0-rc.1',
+        'version' => '4.4.0.0-RC1',
+        'reference' => '4d6873347d8e7ef26412732120caf2d58dfbf0ec',
         'type' => 'wordpress-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -29,9 +29,9 @@
             'dev_requirement' => false,
         ),
         'xwp/stream' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '181efb51ef88cefefce545c3cd56c948f2787107',
+            'pretty_version' => 'v4.4.0-rc.1',
+            'version' => '4.4.0.0-RC1',
+            'reference' => '4d6873347d8e7ef26412732120caf2d58dfbf0ec',
             'type' => 'wordpress-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
